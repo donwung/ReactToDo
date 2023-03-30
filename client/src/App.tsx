@@ -8,11 +8,12 @@ import ShowTasks from './components/ShowTasks'
 function App() {
   const [count, setCount] = useState(0)
   const [newTask, setNewTask] = useState("");
+  const [updated, setUpdated] = useState(false);
 
 
   // sends new task to api
   // new task gets POSTed
-  // no trade-offs observed
+  // field is cleared
   const handleOnSubmit = (e: any) => {
     e.preventDefault();
     console.log("submitting...");
@@ -22,6 +23,7 @@ function App() {
         task: newTask
       }
     )
+    setUpdated(true);
     setNewTask("");
   }
 
@@ -37,7 +39,7 @@ function App() {
 
       {/* show all tasks */}
       <h1>Tasks:</h1>
-      <ShowTasks></ShowTasks>
+      <ShowTasks setUpdated={setUpdated} updated={updated}></ShowTasks>
     </div>
   )
 }

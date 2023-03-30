@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react'
+import OneTask from './OneTask';
 
 const ShowTasks = (props: any) => {
     const [tasks, setTasks] = useState<any[]>([]);
@@ -10,6 +11,7 @@ const ShowTasks = (props: any) => {
     // *all* tasks will be grabbed - there is no memoization of any sort
     // any update to tasks will result in rerender and GETing all tasks again
     useEffect(() => {
+        props.updated && props.setUpdated(false);
         axios.get("http://localhost:8000/api/todo-list/")
             .then(res => {
                 console.log(res.data)
@@ -18,7 +20,7 @@ const ShowTasks = (props: any) => {
             .catch(err => {
                 console.log(err)
             })
-    }, [tasks])
+    }, [props.updated])
 
 
 
@@ -27,12 +29,7 @@ const ShowTasks = (props: any) => {
             {/* renders each task in tasks array */}
             {tasks.map((task) => {
                 return (
-                    // TODO: add a OneTask component
-                    <div key={task.id}>
-                        <p>
-                            Task: {task.task} Completed: {task.completed+""}
-                        </p>
-                    </div>
+                    <OneTask task={task} key={task._id} setUpdated={props.setUpdated}></OneTask>
                 )
             })}
         </div>
